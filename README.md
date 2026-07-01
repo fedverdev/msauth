@@ -21,6 +21,38 @@ todo
 - **Ротация access‑токена**  
   `/refresh` – принимает валидный refresh‑токен, выдаёт новый access‑токен (и опционально обновляет refresh).
 
+## Диаграммы
+
+### Регистрация пользователя
+```mermaid
+sequenceDiagram
+    participant Client as Клиент
+    participant Auth as ms-auth
+    participant DB
+
+    Client->>Auth: POST /api/v1/register {credentials}
+    activate Auth
+    Auth->>Auth: Валидирует {credentials}
+    alt {credentials} не валидны
+    Auth-->>Client: Возвращает 400: неверный формат
+    else {credentials} валидны
+        Auth->>Auth: Хэширует пароль (bcrypt)
+        Auth->>DB: INSERT INTO users (login, password) VALUES (?, ?)
+        activate DB
+        alt duplicate key error (login занят)
+            DB-->>Auth: Ошибка дубликата
+            Auth-->>Client: 409: login занят
+        else Другие ошибки БД
+            DB -->> Auth: Ошибка БД
+            Auth -->> Client: 500: Внутренняя ошибка сервиса
+        else вставка успешна
+            Auth-->>Client: 201: пользователь зарегистрирован
+        end
+        deactivate DB
+    end
+    deactivate Auth
+```
+
 ## Стэк
 
 todo
