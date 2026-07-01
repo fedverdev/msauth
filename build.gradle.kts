@@ -23,6 +23,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-security-test")
@@ -30,6 +31,7 @@ dependencies {
 	testCompileOnly("org.projectlombok:lombok")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testAnnotationProcessor("org.projectlombok:lombok")
+    runtimeOnly("org.postgresql:postgresql")
 }
 
 tasks.withType<Test> {
